@@ -7,7 +7,8 @@ const useProducts=()=>{
     const [loading,setLoading]=useState(true)
     const [error,setError]=useState(null)
     useEffect(()=>{
-        axios('./furnitureData.json')
+
+        axios('../furnitureData.json') // ../ dibo taile kono error dibe na deploy e and routing e.
         .then(data=>setProducts(data.data))
         .catch(err=>setError(err))
         .finally(()=>setLoading(false))
