@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import useProducts from "../Hooks/useProducts";
 import ProductCard from "../Components/ProductCard";
+import LoadingSpinner from "../Components/LoadingSpinner";
 
 const Products = () => {
-  const { products } = useProducts();
+  const { products, loading } = useProducts();
   const [search, setSearch] = useState("");
   const term = search.trim().toLocaleLowerCase();
   const searchedProducts = term
@@ -11,7 +12,7 @@ const Products = () => {
         product.name.toLocaleLowerCase().includes(term)
       )
     : products;
-    console.log(searchedProducts)
+  console.log(searchedProducts);
   return (
     <div>
       <div className="flex justify-between items-center py-5">
@@ -30,11 +31,15 @@ const Products = () => {
           />
         </label>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {searchedProducts.map((product) => (
-          <ProductCard key={product.id} product={product}></ProductCard>
-        ))}
-      </div>
+      {loading ? (
+        <LoadingSpinner count={16} />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {searchedProducts.map((product) => (
+            <ProductCard key={product.id} product={product}></ProductCard>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

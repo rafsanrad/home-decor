@@ -1,13 +1,32 @@
 import React from "react";
 import { useParams } from "react-router";
 import useProducts from "../Hooks/useProducts";
+import { updateList } from "../utils/localStorage";
 
 const ProductDetails = () => {
   const { id } = useParams(); //useparams theke id ta string akare pabo.
-  const { products,loading,error } = useProducts();
+  const { products,loading,} = useProducts();
+
   const product = products.find((p) => String(p.id) === id);
+
   if(loading) return <p>Loading...</p>
-  const {image,name,category,price,description}=product
+  const {image,name,category,price,description}=product || {} //fallback banai rakhlam jate kono error na dey
+
+
+//   const handleAddToWishList=()=>{
+//     const existingList=JSON.parse(localStorage.getItem('wishlist'))
+//     let updatedList=[]
+//     if(existingList){
+//         const isDuplicate=existingList.some(p=>p.id===product.id) //some method find er motoi but eta boolean value(true or false)return kore.
+//         if(isDuplicate)return alert('already added')
+//         updatedList=[...existingList,product]
+//     }
+//     else{
+//         updatedList.push(product);
+//     }
+//     localStorage.setItem('wishlist',JSON.stringify(updatedList))
+//   }
+
   return (
     <div className="card bg-base-100 border shadow-sm ">
       <figure className="h-84 overflow-hidden">
@@ -19,7 +38,7 @@ const ProductDetails = () => {
         <p>Category :{category}</p>
         <p>Price :{price}</p>
         <div className="card-actions justify-end">
-          <button className="btn btn-outline">
+          <button onClick={()=>updateList(product)} className="btn btn-outline">
             Add to Wishlist 
           </button>
         </div>
